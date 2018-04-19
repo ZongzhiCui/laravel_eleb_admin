@@ -11,6 +11,12 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+//Route::get('/', function () {
+//    return view('welcome');
+//});
+
+//商铺分类表
+Route::get('/','CategoryController@index');//暂时首页跳到分类列表
+Route::resource('category','CategoryController');
+
+
