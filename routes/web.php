@@ -23,4 +23,9 @@ Route::resource('category','CategoryController');
 Route::resource('shop','ShopUserController');
 //后台管理员
 Route::resource('admin','AdminController');
+//审查在shop.edit
 
+//后台登录
+Route::get('login','LoginController@create')->name('login');
+Route::post('login','LoginController@store')->name('login');
+Route::delete('logout','LoginController@destroy')->name('logout');

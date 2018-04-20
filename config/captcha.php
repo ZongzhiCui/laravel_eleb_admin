@@ -30,11 +30,11 @@ return [
     ],
 
     'inverse'   => [
-        'length'    => 5,
-        'width'     => 120,
+        'length'    => 4,
+        'width'     => 166,
         'height'    => 36,
         'quality'   => 90,
-        'sensitive' => true,
+//        'sensitive' => true,
         'angle'     => 12,
         'sharpen'   => 10,
         'blur'      => 2,

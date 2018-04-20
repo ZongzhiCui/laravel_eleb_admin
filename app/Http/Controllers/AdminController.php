@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Admin;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
@@ -14,7 +16,7 @@ class AdminController extends Controller
      */
     public function index()
     {
-        //
+        return '<h1>管理员首页!</h1>';
     }
 
     /**
@@ -24,7 +26,10 @@ class AdminController extends Controller
      */
     public function create()
     {
-        //
+        if (Auth::user()){
+            return redirect('user');
+        }
+        return view('admin.create');
     }
 
     /**
@@ -35,7 +40,17 @@ class AdminController extends Controller
      */
     public function store(Request $request)
     {
-        //
+//        dd($request->name,$request->password);
+        $this->validate($request,[
+            'name'=>'required',
+        ],[
+
+        ]);
+        Admin::create([
+            'name'=>$request->name??'admin',
+            'password'=>bcrypt($request->password)??bcrypt(123456),
+        ]);
+        return redirect('login')->with('success','添加管理成功!');
     }
 
     /**
@@ -57,7 +72,7 @@ class AdminController extends Controller
      */
     public function edit(Admin $admin)
     {
-        //
+        return view('admin.edit',compact('admin'));
     }
 
     /**
@@ -69,7 +84,24 @@ class AdminController extends Controller
      */
     public function update(Request $request, Admin $admin)
     {
-        //
+        $this->validate($request,[
+            'oldpassword'=>'required',
+            'password'=>'required|confirmed',
+        ],[
+            'oldpassword.required'=>'旧密码必须填写',
+            'password.required'=>'新密码必须填写',
+            'password.confirmed'=>'确认密码与新密码不一致',
+        ]);
+//        dd(Auth::user()->password,$admin->password);
+        if(!Hash::check($request->oldpassword, Auth::user()->password)){
+            echo '旧密码错误!';
+        }
+        $admin->update([
+            'password'=>bcrypt($request->password),
+        ]);
+        Auth::logout();
+        return redirect('login');
+
     }
 
     /**

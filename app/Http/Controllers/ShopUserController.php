@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
+use App\Models\ShopBusiness;
 use App\Models\ShopUser;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ShopUserController extends Controller
 {
@@ -14,8 +17,9 @@ class ShopUserController extends Controller
      */
     public function index()
     {
-        $shop_users = ShopUser::paginate(2);
-        return view('shop.index',compact('shop_users'));
+        $shopUsers = ShopUser::paginate(2);
+//        dd($shop_users);
+        return view('shop.index',compact('shopUsers'));
     }
 
     /**
@@ -25,7 +29,8 @@ class ShopUserController extends Controller
      */
     public function create()
     {
-        //
+        $categorys = Category::all();
+        return view('shop.create',compact('categorys'));
     }
 
     /**
@@ -36,7 +41,29 @@ class ShopUserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request,[
+            'email'=>'required|email|unique:shop_users',
+            'password'=>'required|confirmed|min:6',
+            'name'=>'required|min:2',
+            'captcha' => 'required|captcha'
+        ],[
+            'email.email'=>'邮箱地址不合法',
+            'password.confirmed'=>'两次密码不一致!',
+            'name.min'=>'商铺名称至少2位',
+            'captcha.captcha' => '验证码不正确',
+        ]);
+        DB::transaction(function ()use($request){
+            $shop_business = ShopBusiness::create([
+                'shop_name'=>$request->name,
+                'category_id'=>$request->category_id,
+            ]);
+            ShopUser::create([
+                'email'=>$request->email,
+                'password'=>bcrypt($request->password),
+                'business_id'=>$shop_business->id,
+            ]);
+        });
+        return redirect('shop');
     }
 
     /**
@@ -56,9 +83,11 @@ class ShopUserController extends Controller
      * @param  \App\Models\ShopUser  $shopUser
      * @return \Illuminate\Http\Response
      */
-    public function edit(ShopUser $shopUser)
+    public function edit(ShopUser $shop)
     {
-        //
+//        dd($shopUser);
+        $shop_business = $shop->shop_business;
+        return view('shop.show',compact('shop','shop_business'));
     }
 
     /**
@@ -68,9 +97,12 @@ class ShopUserController extends Controller
      * @param  \App\Models\ShopUser  $shopUser
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ShopUser $shopUser)
+    public function update(Request $request, ShopUser $shop)
     {
-        //
+        $shop->update([
+            'status'=>1,
+        ]);
+        return redirect('shop');
     }
 
     /**

@@ -16,7 +16,7 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <li class="active"><a href="/">商铺分类<span class="sr-only">(current)</span></a></li>
-                <li><a href=" {{ route('shop.index') }}">商家信息</a></li>
+                <li class="active"><a href=" {{ route('shop.index') }}">商家信息</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">其他 <span class="caret"></span></a>
                     <ul class="dropdown-menu">
@@ -39,17 +39,23 @@
 {{--                {{ method_field() }}--}}
             </form>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="#"  data-toggle="modal" data-target="#myModal">登陆后台</a></li>
+                @guest
+                    <li><a href="#" id="click_a"  data-toggle="modal" data-target="#myModal">登录后台</a></li>
+                <li><a href="{{ route('admin.create') }}">注册管理员</a></li>
+                @endguest
+                @auth
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">个人信息 <span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ \Illuminate\Support\Facades\Auth::user()->name }}<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="#">Action</a></li>
+                        <li><a href="{{route('admin.edit',\Illuminate\Support\Facades\Auth::user())}}">修改密码</a></li>
                         <li><a href="#">Another action</a></li>
                         <li><a href="#">Something else here</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="#">Separated link</a></li>
+                        <li><a href="{{route('logout')}}">退出登录</a></li>
                     </ul>
                 </li>
+                @endauth
+                <li>&emsp;</li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
