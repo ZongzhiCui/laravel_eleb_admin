@@ -15,8 +15,8 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="/">文章 <span class="sr-only">(current)</span></a></li>
-               <li><a href=" {{--{{ route('article.create') }}--}}">添加</a></li>
+                <li class="active"><a href="/">商铺分类<span class="sr-only">(current)</span></a></li>
+                <li><a href=" {{ route('shop.index') }}">商家信息</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">其他 <span class="caret"></span></a>
                     <ul class="dropdown-menu">

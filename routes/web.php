@@ -19,4 +19,8 @@
 Route::get('/','CategoryController@index');//暂时首页跳到分类列表
 Route::resource('category','CategoryController');
 
+//后台添加商户
+Route::resource('shop','ShopUserController');
+//后台管理员
+Route::resource('admin','AdminController');
 
