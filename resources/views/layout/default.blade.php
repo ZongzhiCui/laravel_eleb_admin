@@ -33,6 +33,7 @@
 <script src="/js/jquery-3.2.1.js"></script>
 <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
 <script src="/js/bootstrap.js"></script>
+<script src="/layer/layer.js"></script>
 
 @yield('jquery')
 
