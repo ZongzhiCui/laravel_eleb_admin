@@ -179,6 +179,8 @@ return [
 
         Mews\Captcha\CaptchaServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
+        //阿里云oss
+        AliyunOss\Laravel\AliyunOssServiceProvider::class,
     ],
 
     /*
@@ -230,6 +232,8 @@ return [
 
         'Captcha' => Mews\Captcha\Facades\Captcha::class,
         'Image' => Intervention\Image\Facades\Image::class,
+        //阿里云OSS
+        'OSS' => AliyunOss\Laravel\AliyunOssFacade::class,
     ],
 
 ];
