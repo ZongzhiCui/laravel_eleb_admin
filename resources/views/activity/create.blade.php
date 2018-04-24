@@ -8,7 +8,7 @@
             <a href="{{ route('activity.index') }}" class="btn btn-info">活动列表</a>
             <form  method="post" enctype="multipart/form-data" action="{{ route('activity.store') }}" style="margin-top: 10px">
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="分类标题" name="title" value="{{ old('title') }}">
+                    <input type="text" class="form-control" placeholder="活动标题" name="title" value="{{ old('title') }}">
                 </div>
                 <div class="form-group">
                     <textarea name="contents" id="container">
