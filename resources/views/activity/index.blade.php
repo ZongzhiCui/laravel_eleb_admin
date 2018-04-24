@@ -26,7 +26,7 @@
                   <button class="btn btn-xs btn-danger del">删除</button>
             </td>
         </tr>
-        @endforeach;
+        @endforeach
     </table>
         {{ $activitys->links() }}
     </div>
