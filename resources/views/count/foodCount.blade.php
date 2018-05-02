@@ -25,6 +25,11 @@
                         @endforeach
                     @empty
                     @endforelse
+                    <tr>
+                        <td></td>
+                        <td>总计:</td>
+                        <td>{{$dayCount}}</td>
+                    </tr>
                 </table>
             </div>
             <div class="col-sm-4">
@@ -49,6 +54,11 @@
                         @endforeach
                         @empty
                     @endforelse
+                    <tr>
+                        <td></td>
+                        <td>总计:</td>
+                        <td>{{$monthCount}}</td>
+                    </tr>
                 </table>
             </div>
             <div class="col-sm-4">
@@ -73,6 +83,11 @@
                         @endforeach
                         @empty
                     @endforelse
+                    <tr>
+                        <td></td>
+                        <td>总计:</td>
+                        <td>{{$totalCount}}</td>
+                    </tr>
                 </table>
             </div>
         </div>

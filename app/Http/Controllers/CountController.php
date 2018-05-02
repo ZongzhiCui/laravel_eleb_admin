@@ -69,11 +69,41 @@ class CountController extends Controller
             $month[] = DB::select("select foods_id,sum(foods_amount) as m from `order_foods` WHERE order_id in ($str) and created_at like ? GROUP by `foods_id` order BY m desc",[date('Y-m').'%']);
             $day[] = DB::select("select foods_id,sum(foods_amount) as d from `order_foods` where order_id in ($str) and created_at like ? GROUP by `foods_id` order BY d desc",[date('Y-m-d').'%']);
         }
+        
         $total = array_filter($total);
         $month = array_filter($month);
         $day = array_filter($day);
+        /**遍历每条数据把菜品名字写进去  start**/
+        foreach ($total as $val1){
+            foreach ($val1 as $v1){
+                $v1->foods_id = DB::table('order_foods')->where('foods_id',$v1->foods_id)->first()->foods_name;
+            }
+        }
+        foreach ($month as $val2){
+            foreach ($val2 as $v2){
+                $v2->foods_id = DB::table('order_foods')->where('foods_id',$v2->foods_id)->first()->foods_name;
+            }
+        }
+        foreach ($day as $val3){
+            foreach ($val3 as $v3){
+                $v3->foods_id = DB::table('order_foods')->where('foods_id',$v3->foods_id)->first()->foods_name;
+            }
+        }
+        /**遍历每条数据把菜品名字写进去  end**/
+
+
+        /**统计出总计的数量  start**/
+        $totalCount = 0;
+        $monthCount = 0;
+        $dayCount = 0;
+        $totalCount += DB::select("select sum(foods_amount) as total from `order_foods`")[0]->total;
+        $monthCount += DB::select("select sum(foods_amount) as m from `order_foods` where created_at like ?",[date('Y-m').'%'])[0]->m;
+        $dayCount += DB::select("select sum(foods_amount) as d from `order_foods` where created_at like ?",[date('Y-m-d').'%'])[0]->d;
+        /**统计出总计的数量  start**/
+//        dd($totalCount,$monthCount,$dayCount);
+        
 //        dd($shop_ids,$day,$month,$total);
-        return view('count.foodCount',compact('shop_ids','total','month','day'));
+        return view('count.foodCount',compact('shop_ids','total','month','day','totalCount','monthCount','dayCount'));
     }
     //按时间查看订单统计
     public function foodTime(Request $request)
@@ -107,7 +137,12 @@ class CountController extends Controller
             $count[] = DB::select("select foods_id,sum(foods_amount) as d from `order_foods` where order_id in ($str) and created_at between ? and ? GROUP by `foods_id` order BY d desc", [$date, $date1.' 23:59:59']);
         }
         $count = array_filter($count);
+        
+        /**计算搜索的总计量 start**/
+        $count1 = DB::select("select sum(foods_amount) as d from `order_foods` where created_at between ? and ?", [$date, $date1.' 23:59:59'])[0]->d;
+        /**计算搜索的总计量 end**/
+        
 //        dd($shop_ids,$count);
-        return view('count.foodTime',compact('shop_ids','count'));
+        return view('count.foodTime',compact('shop_ids','count','count1'));
     }
 }

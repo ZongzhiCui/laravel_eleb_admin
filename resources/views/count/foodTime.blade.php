@@ -22,5 +22,10 @@
             @endforeach
         @empty
         @endforelse
+        <tr>
+            <td></td>
+            <td>总计:</td>
+            <td>{{$count1}}</td>
+        </tr>
     </table>
 @stop
