@@ -24,7 +24,8 @@
                         <li><a href="/about">关于</a></li>
                         <li><a href="#">Something else here</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="#">Separated link</a></li>
+                        <li><a href="{{route('order.count')}}">订单统计</a></li>
+                        <li><a href="{{route('food.count')}}">菜品统计</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="#">One more separated link</a></li>
                     </ul>

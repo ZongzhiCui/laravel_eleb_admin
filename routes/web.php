@@ -57,3 +57,14 @@ Route::get('/oss', function()
 
 //活动列表
 Route::resource('activity','ActivityController');
+
+//订单量统计
+//订单统计
+Route::get('/orderCount','CountController@orderCount')->name('order.count');
+//订单查询
+Route::post('/orderTime','CountController@orderTime')->name('order.time');
+
+//菜品统计
+Route::get('/foodCount','CountController@foodCount')->name('food.count');
+//菜品查询
+Route::post('/foodTime','CountController@foodTime')->name('food.time');

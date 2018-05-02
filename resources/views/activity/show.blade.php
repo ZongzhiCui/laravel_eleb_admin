@@ -7,7 +7,7 @@
             <h2>活动ID::{{$activity->id}}</h2>
             <h5>活动标题::{{$activity->title}}</h5>
             <p>活动内容::
-            <textarea name="contents" id="container">
+            <textarea name="contents" id="container" readonly>
                 {{$activity->content}}
             </textarea>
             <!-- 配置文件 -->

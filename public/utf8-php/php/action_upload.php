@@ -6,6 +6,7 @@
  * Time: 上午10:17
  */
 include "Uploader.class.php";
+include '\App\Http\Controllers\Tools\UploadController';
 
 /* 上传配置 */
 $base64 = "upload";
@@ -16,7 +17,8 @@ switch (htmlspecialchars($_GET['action'])) {
             "maxSize" => $CONFIG['imageMaxSize'],
             "allowFiles" => $CONFIG['imageAllowFiles']
         );
-        $fieldName = $CONFIG['imageFieldName'];
+        $fieldname = $CONFIG['imageFieldName'];
+        $fieldName = $this->upload1($fieldname);
         break;
     case 'uploadscrawl':
         $config = array(
