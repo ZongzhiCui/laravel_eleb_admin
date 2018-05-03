@@ -11,7 +11,6 @@ class CountController extends Controller
     /**
     - 订单量统计[按商家分别统计和整体统计]（每日、每月、总计） 
     - 菜品销量统计[按商家分别统计和整体统计]（每日、每月、总计） 
-    - 会员管理[会员列表,查询会员,查看会员信息,禁用会员账号]
      */
     public function orderCount()
     {
@@ -45,17 +44,19 @@ class CountController extends Controller
     //菜品统计
     public function foodCount()
     {
-        //查询当前用户的店铺的订单id
+        //查询当前用户的店铺id
         $shop_ids = DB::select('select shop_id from `orders` group by shop_id');
 //        dd($shop_ids);
         $ids = [];
         foreach ($shop_ids as $value){
+            //遍历店铺ID 获取到所有店铺对应的所有订单ID
             $ids[] = DB::table('orders')->where('shop_id',$value->shop_id)->get();
             //后添加把店铺名字加到shop_ids里
             $value->shop_name = DB::select('select DISTINCT shop_name from `orders` where shop_id='.$value->shop_id)[0]->shop_name;
         }
+//        dd($ids);
         //遍历出商铺
-        foreach ($ids as $val){
+        foreach ($ids as $val){ 
             $num = [];
             //遍历出该商铺的订单ID
             foreach ($val as $va){
@@ -137,6 +138,13 @@ class CountController extends Controller
             $count[] = DB::select("select foods_id,sum(foods_amount) as d from `order_foods` where order_id in ($str) and created_at between ? and ? GROUP by `foods_id` order BY d desc", [$date, $date1.' 23:59:59']);
         }
         $count = array_filter($count);
+        /**遍历每条数据把菜品名字写进去  start**/
+        foreach ($count as $val1){
+            foreach ($val1 as $v1){
+                $v1->foods_id = DB::table('order_foods')->where('foods_id',$v1->foods_id)->first()->foods_name;
+            }
+        }
+        /**遍历每条数据把菜品名字写进去  end**/
         
         /**计算搜索的总计量 start**/
         $count1 = DB::select("select sum(foods_amount) as d from `order_foods` where created_at between ? and ?", [$date, $date1.' 23:59:59'])[0]->d;

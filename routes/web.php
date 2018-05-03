@@ -68,3 +68,6 @@ Route::post('/orderTime','CountController@orderTime')->name('order.time');
 Route::get('/foodCount','CountController@foodCount')->name('food.count');
 //菜品查询
 Route::post('/foodTime','CountController@foodTime')->name('food.time');
+
+//会员管理
+Route::resource('member','MemberController');

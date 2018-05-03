@@ -27,7 +27,7 @@
                         <li><a href="{{route('order.count')}}">订单统计</a></li>
                         <li><a href="{{route('food.count')}}">菜品统计</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="#">One more separated link</a></li>
+                        <li><a href="{{route('member.index')}}">会员管理</a></li>
                     </ul>
                 </li>
             </ul>
