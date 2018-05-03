@@ -30,6 +30,15 @@
                         <li><a href="{{route('member.index')}}">会员管理</a></li>
                     </ul>
                 </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">RBAC <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{{route('permission.index')}}">权限列表</a></li>
+                        <li><a href="{{route('role.index')}}">角色列表</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="">--</a></li>
+                    </ul>
+                </li>
             </ul>
             <form class="navbar-form navbar-left" method="get" action="{{--{{ route('good.index') }}--}}">
                 <div class="form-group">

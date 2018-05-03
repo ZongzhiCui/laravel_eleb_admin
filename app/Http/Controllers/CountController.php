@@ -42,7 +42,7 @@ class CountController extends Controller
 
     /**- 菜品销量统计[按日统计,按月统计,累计]（每日、每月、总计） **/
     //菜品统计
-    public function foodCount()
+    public function foodCount1()
     {
         //查询当前用户的店铺id
         $shop_ids = DB::select('select shop_id from `orders` group by shop_id');
@@ -153,4 +153,54 @@ class CountController extends Controller
 //        dd($shop_ids,$count);
         return view('count.foodTime',compact('shop_ids','count','count1'));
     }
+
+    /**飞哥代码  菜品统计**/
+    public function foodCount()
+    {
+        echo '平台订单量统计<br>';
+        echo '累计';
+        //平台订单量统计
+        $count1 = DB::table('orders')->where('order_status','<>','-1')->count();
+        echo $count1;
+        echo '<br>当月';
+        $start = date('Y-m-01');
+        $end = date('Y-m-t 23:59:59');
+        $count2 = DB::table('orders')->where([
+            ['order_status','<>','-1'],
+            ['created_at','>=',$start],
+            ['created_at','<=',$end],
+            //['shop_id',$shop_id] //根据商家ID进行统计
+        ])->count();
+        echo $count2;
+        echo '<br>当天';
+        $start = date('Y-m-d');
+        $end = date('Y-m-d 23:59:59');
+        $count3 = DB::table('orders')->where([
+            ['order_status','<>','-1'],
+            ['created_at','>=',$start],
+            ['created_at','<=',$end]
+        ])->count();
+        echo $count3;
+
+        echo '<hr>';
+        echo '平台菜品销量统计';
+        $rows = DB::table('order_foods')
+            ->join('orders','order_foods.order_id','=','orders.id')
+            ->join('shop_businesses','orders.shop_id','=','shop_businesses.id')
+            ->select('shop_businesses.shop_name','order_foods.foods_name',DB::raw('sum(order_foods.foods_amount) as amounts'))
+            ->groupBy('shop_businesses.shop_name','order_foods.foods_name')
+            ->orderBy('amounts','desc')
+            //根据订单时间和商家id统计
+            /*->where([
+                ['orders.created_at','>=',$start],
+                ['orders.created_at','<=',$end],
+                ['orders.shop_id',$shop_id]
+            ])*/
+            ->get();
+//        dd($rows);
+        foreach ($rows as $row){
+            echo '<br>'.$row->shop_name.':'.$row->foods_name.':'.$row->amounts;
+        }
+    }
+
 }

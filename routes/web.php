@@ -71,3 +71,9 @@ Route::post('/foodTime','CountController@foodTime')->name('food.time');
 
 //会员管理
 Route::resource('member','MemberController');
+
+//RBAC   RBAC
+//权限管理
+Route::resource('permission','PermissionController');
+//角色管理
+Route::resource('role','RoleController');

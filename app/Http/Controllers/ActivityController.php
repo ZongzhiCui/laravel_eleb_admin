@@ -11,6 +11,7 @@ class ActivityController extends Controller
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
+     * 活动管理
      */
     public function index()
     {
