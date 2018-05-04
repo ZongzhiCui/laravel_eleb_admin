@@ -42,7 +42,17 @@
                         url: "permission/"+id,
                         data: "_token={{ csrf_token() }}",
                         success: function(msg){
-                            tr.fadeOut(1000);
+                            if (msg[0] == 0){
+                                layer.msg('有角色拥有改权限禁止删除', function(){
+                                    //关闭后的操作
+                                });
+                            }else{
+                                layer.msg('删除成功!', function(){
+                                    //关闭后的操作
+                                });
+                                tr.fadeOut(1000);
+                            }
+
                         }
                     });
                 }

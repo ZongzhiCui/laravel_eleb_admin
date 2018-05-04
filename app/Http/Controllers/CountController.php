@@ -42,7 +42,7 @@ class CountController extends Controller
 
     /**- 菜品销量统计[按日统计,按月统计,累计]（每日、每月、总计） **/
     //菜品统计
-    public function foodCount1()
+    public function foodCount()
     {
         //查询当前用户的店铺id
         $shop_ids = DB::select('select shop_id from `orders` group by shop_id');
@@ -155,7 +155,7 @@ class CountController extends Controller
     }
 
     /**飞哥代码  菜品统计**/
-    public function foodCount()
+    public function foodCount1()
     {
         echo '平台订单量统计<br>';
         echo '累计';

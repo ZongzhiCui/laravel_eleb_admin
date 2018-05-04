@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Permission;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PermissionController extends Controller
 {
@@ -41,7 +42,7 @@ class PermissionController extends Controller
         ],[]);
         Permission::create($request->except('_token'));
 //        return back()->withInput()->with('danger','输入错误!极低几率出现');
-        return redirect('permission');
+        return redirect('permission')->with('success','成功!');
     }
 
     /**
@@ -79,7 +80,7 @@ class PermissionController extends Controller
             'name'=>'required',
         ],[]);
         $permission->update($request->except(['_token','_method']));
-        return redirect('permission');
+        return redirect('permission')->with('success','成功!');
     }
 
     /**
@@ -90,7 +91,12 @@ class PermissionController extends Controller
      */
     public function destroy(permission $permission)
     {
-        $permission->delete();
-        return redirect('permission');
+        $have = DB::table('permission_role')->where('permission_id',$permission->id)->first();
+//        dd($have);die;
+        if (empty($have)){
+            $permission->delete();
+            return 1;
+        }
+        return 0;
     }
 }

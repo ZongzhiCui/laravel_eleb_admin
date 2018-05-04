@@ -30,15 +30,18 @@
                         <li><a href="{{route('member.index')}}">会员管理</a></li>
                     </ul>
                 </li>
+                @admin
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">RBAC <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="{{route('permission.index')}}">权限列表</a></li>
-                        <li><a href="{{route('role.index')}}">角色列表</a></li>
+                        <li><a href="{{ route('permission.index') }}">权限列表</a></li>
+                        <li><a href="{{ route('role.index') }}">角色列表</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="">--</a></li>
+                        <li><a href="{{ route('admin.index') }}">管理员列表</a></li>
                     </ul>
                 </li>
+                @else
+                @endadmin
             </ul>
             <form class="navbar-form navbar-left" method="get" action="{{--{{ route('good.index') }}--}}">
                 <div class="form-group">
@@ -51,7 +54,6 @@
             <ul class="nav navbar-nav navbar-right">
                 @guest
                     <li><a href="#" id="click_a"  data-toggle="modal" data-target="#myModal">登录后台</a></li>
-                <li><a href="{{ route('admin.create') }}">注册管理员</a></li>
                 @endguest
                 @auth
                 <li class="dropdown">
@@ -61,7 +63,13 @@
                         <li><a href="#">Another action</a></li>
                         <li><a href="#">Something else here</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="{{route('logout')}}">退出登录</a></li>
+                        <li>
+                            <form action="{{route('logout')}}" method="post">
+                                {{ csrf_field() }}
+                                {{ method_field('DELETE') }}
+                                <button class="btn btn-link">退出登录</button>
+                            </form>
+                        </li>
                     </ul>
                 </li>
                 @endauth

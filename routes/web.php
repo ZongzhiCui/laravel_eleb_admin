@@ -15,6 +15,13 @@
 //    return view('welcome');
 //});
 
+//后台登录
+Route::get('login','LoginController@create')->name('login');
+Route::post('login','LoginController@store')->name('login');
+Route::delete('logout','LoginController@destroy')->name('logout');
+
+//验证登录中间件
+Route::group(['middleware'=>['adminLogin']],function (){
 //商铺分类表
 Route::get('/','CategoryController@index');//暂时首页跳到分类列表
 Route::resource('category','CategoryController');
@@ -24,11 +31,6 @@ Route::resource('shop','ShopUserController');
 //后台管理员
 Route::resource('admin','AdminController');
 //审查在shop.edit
-
-//后台登录
-Route::get('login','LoginController@create')->name('login');
-Route::post('login','LoginController@store')->name('login');
-Route::delete('logout','LoginController@destroy')->name('logout');
 
 //阿里云OSS转存储文件
 Route::get('/oss', function()
@@ -72,8 +74,21 @@ Route::post('/foodTime','CountController@foodTime')->name('food.time');
 //会员管理
 Route::resource('member','MemberController');
 
-//RBAC   RBAC
+    Route::group(['middleware' => ['super']],function (){
+        //RBAC   RBAC
 //权限管理
-Route::resource('permission','PermissionController');
+        Route::resource('permission','PermissionController');
 //角色管理
-Route::resource('role','RoleController');
+        Route::resource('role','RoleController');
+//管理员管理
+        //修改回显
+        Route::get('admin/{admin}/editPermission','AdminController@editPermission')->name('admin.editPermission');
+        //修改保存
+        Route::put('admin/{admin}','AdminController@updatePermission')->name('admin.updatePermission');
+    });
+
+});
+
+
+
+

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Admin;
+use App\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -16,7 +17,8 @@ class AdminController extends Controller
      */
     public function index()
     {
-        return '<h1>管理员首页!</h1>';
+        $admins = Admin::paginate(10);
+        return view('admin.index',compact('admins'));
     }
 
     /**
@@ -26,9 +28,9 @@ class AdminController extends Controller
      */
     public function create()
     {
-        if (Auth::user()){
-            return redirect('user');
-        }
+        /*if (Auth::user()){
+            return redirect('/');
+        }*/
         return view('admin.create');
     }
 
@@ -50,7 +52,7 @@ class AdminController extends Controller
             'name'=>$request->name??'admin',
             'password'=>bcrypt($request->password)??bcrypt(123456),
         ]);
-        return redirect('login')->with('success','添加管理成功!');
+        return redirect('/admin')->with('success','添加管理成功!');
     }
 
     /**
@@ -61,9 +63,22 @@ class AdminController extends Controller
      */
     public function show(Admin $admin)
     {
-        //
+//        dd($admin->roles[0]->display_name);
+        return view('admin.show',compact('admin'));
     }
 
+    public function editPermission(Admin $admin)
+    {
+        $roles = Role::all();
+        return view('admin.editPermission',compact('admin','roles'));
+    }
+
+    public function updatePermission(Request $request, Admin $admin)
+    {
+        $admin->update($request->except(['_token','_method','role']));
+        $admin->syncRoles($request->role);
+        return redirect('admin')->with('success','成功!');
+    }
     /**
      * Show the form for editing the specified resource.
      *
@@ -81,6 +96,7 @@ class AdminController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Admin  $admin
      * @return \Illuminate\Http\Response
+     * 管理员修改自己的密码
      */
     public function update(Request $request, Admin $admin)
     {
@@ -112,6 +128,7 @@ class AdminController extends Controller
      */
     public function destroy(Admin $admin)
     {
-        //
+        $admin->delete();
+        $admin->syncRoles([]);
     }
 }

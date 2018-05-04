@@ -13,6 +13,7 @@ class RoleController extends Controller
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
+     * 角色管理..其中事务没有效果 因为数据库是myisam
      */
     public function index()
     {
@@ -49,7 +50,7 @@ class RoleController extends Controller
             $owner->syncPermissions($request->role);
         });
 //        return back()->withInput()->with('danger','输入错误!极低几率出现');
-        return redirect('role');
+        return redirect('role')->with('success','成功!');
     }
 
     /**
@@ -72,13 +73,14 @@ class RoleController extends Controller
     public function edit(Role $role)
     {
         $permissions = Permission::all();
-        $permissionss = $role->permissions;
+        /*$permissionss = $role->permissions;
         $ids = [];
         foreach ($permissionss as $v){
             $ids[] = $v->id;
         }
+         写在视图:{{in_array($row->id,$ids)?'checked':''}} */
 //        dd($ids);
-        return view('role.edit',compact('role','permissions','ids'));
+        return view('role.edit',compact('role','permissions'));
     }
 
     /**
@@ -99,7 +101,7 @@ class RoleController extends Controller
             $role->syncPermissions($request->role);
         });
 
-        return redirect('role');
+        return redirect('role')->with('success','成功!');
     }
 
     /**
@@ -114,6 +116,6 @@ class RoleController extends Controller
             $role->delete();
             $role->syncPermissions([]);
         });
-        return redirect('role');
+        return json_encode(['success','成功!']);
     }
 }

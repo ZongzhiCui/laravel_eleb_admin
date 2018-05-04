@@ -95,7 +95,7 @@ class LoginController extends Controller
      * @param  \App\Models\Login  $login
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Login $login)
+    public function destroy()
     {
         Auth::logout();
         return redirect('login')->with('success', '您已成功退出！');

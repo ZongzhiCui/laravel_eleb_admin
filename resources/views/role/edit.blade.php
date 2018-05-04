@@ -57,7 +57,7 @@
                                 <label for="description" class="col-md-2 control-label">权限选择</label>
                                 <div class="col-md-8">
                                     @foreach($permissions as $row)
-                                        <label><input type="checkbox" name="role[]" value="{{$row->id}}" {{in_array($row->id,$ids)?'checked':''}} class="form-control-static">{{$row->display_name}}&emsp;</label>
+                                        <label><input type="checkbox" name="role[]" value="{{$row->id}}" {{$role->hasPermission($row->name)?'checked':''}} class="form-control-static">{{$row->display_name}}&emsp;</label>
                                     @endforeach
                                 </div>
                             </div>

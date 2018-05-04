@@ -1,32 +1,28 @@
 @extends('layout.default')
-@section('title','RBAC角色表')
+@section('title','管理员表')
 @section('content')
     <div class="table-responsive">
     <table class="table table-hover" id="mytable">
         <tr>
             <td>ID</td>
             <td>name</td>
-            <td>display_name</td>
-            <td>description</td>
             <td>操作
-                <a href="{{ route('role.create') }}">添加角色</a>
+                <a href="{{ route('admin.create') }}">添加管理员</a>
             </td>
         </tr>
-        @foreach ($roles as $row)
+        @foreach ($admins as $row)
         <tr data-id="{{ $row->id }}">
             <td>{{$row->id}}</td>
             <td>{{$row->name}}</td>
-            <td>{{$row->display_name}}</td>
-            <td>{{$row->description}}</td>
             <td>
-                <a href="{{ route('role.show',compact('row')) }}" class="btn btn-xs btn-success">查看</a>
-                <a href="{{ route('role.edit',['row'=>$row]) }}" class="btn btn-xs btn-primary">编辑</a>
+                <a href="{{ route('admin.show',compact('row')) }}" class="btn btn-xs btn-success">查看</a>
+                <a href="{{ route('admin.editPermission',['row'=>$row]) }}" class="btn btn-xs btn-primary">编辑</a>
                   <button class="btn btn-xs btn-danger del">删除</button>
             </td>
         </tr>
         @endforeach
     </table>
-        {{ $roles->links() }}
+        {{ $admins->links() }}
     </div>
 @stop
 
@@ -39,7 +35,7 @@
                     var id = tr.data('id');
                     $.ajax({
                         type:'DELETE',
-                        url: "role/"+id,
+                        url: "admin/"+id,
                         data: "_token={{ csrf_token() }}",
                         success: function(msg){
                             tr.fadeOut(1000);
