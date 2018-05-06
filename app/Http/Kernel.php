@@ -59,7 +59,12 @@ class Kernel extends HttpKernel
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
+//        自己家的中间件
         'adminLogin'=> adminLogin::class,
         'super' => super::class,
+        //RBAC 权限扩展需要的类
+        'role' => \Laratrust\Middleware\LaratrustRole::class,
+        'permission' => \Laratrust\Middleware\LaratrustPermission::class,
+        'ability' => \Laratrust\Middleware\LaratrustAbility::class,
     ];
 }

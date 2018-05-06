@@ -21,9 +21,9 @@ Route::post('login','LoginController@store')->name('login');
 Route::delete('logout','LoginController@destroy')->name('logout');
 
 //验证登录中间件
-Route::group(['middleware'=>['adminLogin']],function (){
+Route::group(['middleware'=>['adminLogin','role:general|super']],function (){
 //商铺分类表
-Route::get('/','CategoryController@index');//暂时首页跳到分类列表
+Route::get('/','CategoryController@index')->name('/');//暂时首页跳到分类列表
 Route::resource('category','CategoryController');
 
 //后台添加商户
@@ -74,21 +74,47 @@ Route::post('/foodTime','CountController@foodTime')->name('food.time');
 //会员管理
 Route::resource('member','MemberController');
 
-    Route::group(['middleware' => ['super']],function (){
-        //RBAC   RBAC
-//权限管理
-        Route::resource('permission','PermissionController');
-//角色管理
-        Route::resource('role','RoleController');
-//管理员管理
-        //修改回显
-        Route::get('admin/{admin}/editPermission','AdminController@editPermission')->name('admin.editPermission');
-        //修改保存
-        Route::put('admin/{admin}','AdminController@updatePermission')->name('admin.updatePermission');
+//发送邮件
+    Route::get('/mail',function(){
+        \Illuminate\Support\Facades\Mail::send(
+            'mail',//邮件视图模版
+            ['name'=>'张三'],//模版变量赋值
+            function ($message){
+                $message->to('邮箱地址')->subject('订单确认');
+            });
+        return 11;
     });
 
 });
 
 
+//示例 中间件
+//Route::get('admin','AdminController@index')->middleware('role:admin|lisi|zhangsan');
+//视图模版
+//@role('admin')
+//<p>This is visible to users with the admin role. Gets translated to
+//\Laratrust::hasRole('admin')</p>
+//@endrole
+//
+//@permission('manage-admins')
+//<p>This is visible to users with the given permissions. Gets translated to
+//\Laratrust::can('manage-admins'). The @can directive is already taken by core
+//    laravel authorization package, hence the @permission directive instead.</p>
+//@endpermission
+//权限限制
+Route::group(['middleware' => ['role:super']], function() { //permission:admin.create
+    //RBAC   RBAC
+//权限管理
+    Route::resource('permission','PermissionController');
+//角色管理
+    Route::resource('role','RoleController');
+//管理员管理
+    //修改回显
+    Route::get('admin/{admin}/editPermission','AdminController@editPermission')->name('admin.editPermission');
+    //修改保存
+    Route::put('admin/{admin}','AdminController@updatePermission')->name('admin.updatePermission');
+    //菜单管理
+    Route::resource('menu','MenuController');
 
+});
 

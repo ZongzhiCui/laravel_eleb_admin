@@ -69,7 +69,7 @@ class AdminController extends Controller
 
     public function editPermission(Admin $admin)
     {
-        $roles = Role::all();
+        $roles = Role::orderBy('name','asc')->get();
         return view('admin.editPermission',compact('admin','roles'));
     }
 
