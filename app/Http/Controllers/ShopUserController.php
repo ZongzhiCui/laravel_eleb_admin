@@ -102,9 +102,18 @@ class ShopUserController extends Controller
         $shop->update([
             'status'=>1,
         ]);
+        $this->sendEmail($shop->emial,$shop->emial);
         return redirect('shop');
     }
-
+    //发送邮件的方法
+    private function sendEmail($email,$name){
+        \Illuminate\Support\Facades\Mail::send(
+            'mail',//邮件视图模版
+            ['name'=>$name],//模版变量赋值
+            function ($message) use($email){
+                $message->to($email)->subject('审核通过');
+        });
+    }
     /**
      * Remove the specified resource from storage.
      *

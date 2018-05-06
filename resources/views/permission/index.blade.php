@@ -19,9 +19,12 @@
             <td>{{$row->display_name}}</td>
             <td>{{$row->description}}</td>
             <td>
+                {{--没有'权限修改'权限的看不到--}}
+                @permission('permission.edit')
                 <a href="{{ route('permission.show',compact('row')) }}" class="btn btn-xs btn-success">查看</a>
                 <a href="{{ route('permission.edit',['row'=>$row]) }}" class="btn btn-xs btn-primary">编辑</a>
-                  <button class="btn btn-xs btn-danger del">删除</button>
+                <button class="btn btn-xs btn-danger del">删除</button>
+                @endpermission
             </td>
         </tr>
         @endforeach

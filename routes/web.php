@@ -74,7 +74,7 @@ Route::post('/foodTime','CountController@foodTime')->name('food.time');
 //会员管理
 Route::resource('member','MemberController');
 
-//发送邮件
+/*//发送邮件
     Route::get('/mail',function(){
         \Illuminate\Support\Facades\Mail::send(
             'mail',//邮件视图模版
@@ -83,7 +83,7 @@ Route::resource('member','MemberController');
                 $message->to('cfq850228@163.com')->subject('订单确认');
             });
         return '邮件发送成功!!!';
-    });
+    });*/
 
 });
 

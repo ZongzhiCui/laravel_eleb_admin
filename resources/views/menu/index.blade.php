@@ -22,9 +22,12 @@
             <td>{{$row->url}}</td>
             <td>{{$row->sort}}</td>
             <td>
+                {{--没有'修改'权限的看不到--}}
+                @permission('menu.edit')
                 <a href="{{ route('menu.show',compact('row')) }}" class="btn btn-xs btn-success">查看</a>
                 <a href="{{ route('menu.edit',['row'=>$row]) }}" class="btn btn-xs btn-primary">编辑</a>
                   <button class="btn btn-xs btn-danger del">删除</button>
+                @endpermission
             </td>
         </tr>
         @endforeach
