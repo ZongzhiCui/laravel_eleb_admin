@@ -80,9 +80,9 @@ Route::resource('member','MemberController');
             'mail',//邮件视图模版
             ['name'=>'张三'],//模版变量赋值
             function ($message){
-                $message->to('邮箱地址')->subject('订单确认');
+                $message->to('cfq850228@163.com')->subject('订单确认');
             });
-        return 11;
+        return '邮件发送成功!!!';
     });
 
 });
