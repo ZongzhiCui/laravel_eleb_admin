@@ -74,6 +74,15 @@ Route::post('/foodTime','CountController@foodTime')->name('food.time');
 //会员管理
 Route::resource('member','MemberController');
 
+//DAY12 活动管理
+    //抽奖活动表 events
+    Route::resource('event','EventController');
+    //抽奖活动奖品表 enevt_prize
+    Route::resource('eventPrize','EnevtPrizeController');
+    //活动报名表 event_members
+    Route::resource('eventMember','EventMemberController');
+
+
 /*//发送邮件
     Route::get('/mail',function(){
         \Illuminate\Support\Facades\Mail::send(

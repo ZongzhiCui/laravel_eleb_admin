@@ -47,8 +47,14 @@
                 {{--调用方法查询父类--}}
                 @foreach(\App\Models\Menu::getMenu(0) as $row)
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ $row->name }} <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
+                        @foreach(\App\Models\Menu::getMenu($row->id) as $val)
+                        @if(\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->can($val->url))
+
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ $row->name }} <span class="caret"></span></a>
+                            @break
+                            @endif
+                        @endforeach
+                            <ul class="dropdown-menu">
                             {{--调用方法查询子类数据--}}
                             @foreach(\App\Models\Menu::getMenu($row->id) as $val)
                                 {{--判断当前登录用户有权限再显示--}}
