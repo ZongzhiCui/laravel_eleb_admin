@@ -181,6 +181,8 @@ return [
         Intervention\Image\ImageServiceProvider::class,
         //阿里云oss
         AliyunOss\Laravel\AliyunOssServiceProvider::class,
+        //ide自动完成、代码智能提示和代码跟踪
+        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
     ],
 
     /*
