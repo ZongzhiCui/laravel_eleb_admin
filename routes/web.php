@@ -21,7 +21,7 @@ Route::post('login','LoginController@store')->name('login');
 Route::delete('logout','LoginController@destroy')->name('logout');
 
 //验证登录中间件
-Route::group(['middleware'=>['adminLogin','role:general|super']],function (){
+Route::group(['middleware'=>['adminLogin','role:super']],function (){
 //商铺分类表
 Route::get('/','CategoryController@index')->name('/');//暂时首页跳到分类列表
 Route::resource('category','CategoryController');
@@ -131,3 +131,7 @@ Route::group(['middleware' => ['role:super']], function() { //permission:admin.c
 
 });
 
+Route::get('/test',function (){
+    $a = \Illuminate\Support\Facades\Auth::user()->hasRole('super');
+    dd($a);
+});
