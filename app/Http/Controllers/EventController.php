@@ -71,12 +71,19 @@ class EventController extends Controller
     {
         return view('event.show',compact('event'));
     }
-    //查看活动详情有开奖按钮
+    //查看活动详情有开奖按钮   $lottery活动对象!
     public function lottery(Event $lottery)
     {
 //        dd($lottery->id);//获取到这个传过来的参数
         //获取该活动的所有商户user
         $eventMembers = EventMember::where('events_id',$lottery->id)->get();
+        if ($eventMembers->count() == 0){
+            return [
+                'success'=>true,
+                'danger'=>'没有活动参与者!',
+//                'is_prize'=>'0',
+            ];
+        }
 //        dd($eventMembers);
         //获取所有的奖品
         $eventPrizes = EnevtPrize::where('events_id',$lottery->id)->get();
@@ -91,12 +98,26 @@ class EventController extends Controller
                 'member_id'=>$pop->member_id,
             ]);
         }
-        //应该遍历奖品.奖品是设定好的.(一个问题:如果参加活动人少.奖品没有派发完毕)
-        $data = [  //返回的数组 前台没有提示!!!
+        //开完奖 修改活动的 开奖字段is_prize 为1
+        $lottery->update([
+            'is_prize'=>1,
+        ]);
+        $data = [
             'success'=>true,
-            'danger'=>'摇奖完毕!!'
+            'danger'=>'摇奖完毕!!',
+            'is_prize'=>'1',
         ];
         return $data;
+    }
+    //获奖名单!!
+    public function winnersList(Event $winnersList)
+    {
+//        dd($winnersList->id);
+        $winnersLists = EnevtPrize::where([   //查奖品表
+            ['events_id','=',$winnersList->id],   //条件1 活动ID
+            ['member_id','<>',0]                  //条件2 奖品有获奖者
+        ])->paginate(10);
+        return view('event.winnersList',compact('winnersLists'));
     }
     /**
      * Show the form for editing the specified resource.

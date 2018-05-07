@@ -77,8 +77,10 @@ Route::resource('member','MemberController');
 //DAY12 活动管理
     //抽奖活动表 events
     Route::resource('event','EventController');
-    //查看抽奖活动有一个开奖按钮
+    //查看抽奖活动有一个开奖按钮 传的是活动对象
     Route::get('/lottery/{lottery}','EventController@lottery')->name('lottery');
+    //获奖名单按钮!!传的是活动对象
+    Route::get('/winnersList/{winnersList}','EventController@winnersList')->name('winnersList');
     //抽奖活动奖品表 enevt_prize
     Route::resource('eventPrize','EnevtPrizeController');
     //活动报名表 event_members
