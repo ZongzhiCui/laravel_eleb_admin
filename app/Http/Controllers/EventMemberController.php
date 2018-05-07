@@ -14,7 +14,8 @@ class EventMemberController extends Controller
      */
     public function index()
     {
-        //
+        $eventMembers = EventMember::orderBy('id','desc')->paginate(10);
+        return view('eventMember.index',compact('eventMembers'));
     }
 
     /**

@@ -6,32 +6,28 @@
         <tr>
             <td>ID</td>
             <td>events_id-活动ID</td>
-            <td>name-奖品名称</td>
-            <td>description-奖品详情</td>
-            <td>member_id-中奖商家帐号ID</td>
+            <td>member_id-报名商家帐号ID</td>
             <td>操作
-                <a href="{{ route('eventPrize.create') }}">添加奖品</a>
+                <a href="{{ route('eventMember.create') }}">添加报名</a>
             </td>
         </tr>
-        @foreach ($eventPrizes as $row)
+        @foreach ($eventMembers as $row)
         <tr data-id="{{ $row->id }}">
             <td>{{$row->id}}</td>
             <td>{{ $row->event->title }}</td>
-            <td>{{$row->name}}</td>
-            <td>{!! $row->description !!}</td>
-            <td>{{ $row->business->shop_name }}</td>
+            <td>{{ $row->user->email }}</td>
             <td>
                 {{--没有'权限修改'权限的看不到--}}
-                @permission('eventPrize.edit')
-                <a href="{{ route('eventPrize.show',compact('row')) }}" class="btn btn-xs btn-success">查看</a>
-                <a href="{{ route('eventPrize.edit',['row'=>$row]) }}" class="btn btn-xs btn-primary">编辑</a>
+                @permission('eventMember.edit')
+                <a href="{{ route('eventMember.show',compact('row')) }}" class="btn btn-xs btn-success">查看</a>
+                <a href="{{ route('eventMember.edit',['row'=>$row]) }}" class="btn btn-xs btn-primary">编辑</a>
                   <button class="btn btn-xs btn-danger del">删除</button>
                 @endpermission
             </td>
         </tr>
         @endforeach
     </table>
-        {{ $eventPrizes->links() }}
+        {{ $eventMembers->links() }}
     </div>
 @stop
 
@@ -44,7 +40,7 @@
                     var id = tr.data('id');
                     $.ajax({
                         type:'DELETE',
-                        url: "eventPrize/"+id,
+                        url: "eventMember/"+id,
                         data: "_token={{ csrf_token() }}",
                         success: function(msg){
 //                            console.log(msg.success);

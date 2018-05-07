@@ -16,8 +16,8 @@ class EnevtPrize extends Model
 
     public function business()
     {
-        return $this->belongsTo(ShopBusiness::class,'member_id')->withDefault([
-            'shop_name'=>'默认未分配中奖人!'
+        return $this->belongsTo(ShopUser::class,'member_id')->withDefault([
+            'shop_name'=>'默认未分配中商铺!'
         ]);
     }
 }
