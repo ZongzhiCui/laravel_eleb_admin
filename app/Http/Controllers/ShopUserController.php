@@ -112,7 +112,7 @@ class ShopUserController extends Controller
             ['name'=>$name],//模版变量赋值
             function ($message) use($email){
                 $message->to($email)->subject('审核通过');
-        });
+            });
     }
     /**
      * Remove the specified resource from storage.

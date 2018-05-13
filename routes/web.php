@@ -131,10 +131,38 @@ Route::group(['middleware' => ['role:super']], function() { //permission:admin.c
 
 });
 
+//测试 管理员角色
 Route::get('/test',function (){
     $user = \Illuminate\Support\Facades\Auth::user();
     dump($user);
     $a = $user->hasRole('super');
     dd($a);
+});
+//测试 中文分词搜索
+Route::get('/search',function (){
+    $cl = new \App\SphinxClient();
+    $cl->SetServer ( '127.0.0.1', 9312);
+//$cl->SetServer ( '10.6.0.6', 9312);
+//$cl->SetServer ( '10.6.0.22', 9312);
+//$cl->SetServer ( '10.8.8.2', 9312);
+    $cl->SetConnectTimeout ( 10 );
+    $cl->SetArrayResult ( true );
+// $cl->SetMatchMode ( SPH_MATCH_ANY);
+    $cl->SetMatchMode ( SPH_MATCH_EXTENDED2);
+    $cl->SetLimits(0, 1000);
+    $info = '小厨';
+    $res = $cl->Query($info, 'shops');//搜索的索引名称 csft.conf里设置的名字
+//print_r($cl);
+    if ($res['total']>0){
+        $ids = collect($res['matches'])->pluck('id'); //得到ID数组
+        //写构造器 查询所有ID的数据
+//        dd($ids);
+        $data = \App\Models\ShopBusiness::whereIn('id',$ids)->get();
+//        dd($data);
+    }else{
+        //没有搜索到你找的内容
+        echo 'null';
+    }
+//    print_r($res);
 });
 
